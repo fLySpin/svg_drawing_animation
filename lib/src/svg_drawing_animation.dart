@@ -100,8 +100,7 @@ class _SvgDrawingAnimationState extends State<SvgDrawingAnimation>
             return widget.loadingWidgetBuilder(context);
           }
           if (snapshot.hasError) {
-            return widget.errorWidgetBuilder(
-                context, snapshot.error!, snapshot.stackTrace);
+            return widget.errorWidgetBuilder(context, snapshot.error!, snapshot.stackTrace);
           }
           final drawable = snapshot.data!;
           // Compute total length and set up animation;
@@ -111,11 +110,9 @@ class _SvgDrawingAnimationState extends State<SvgDrawingAnimation>
 
             if (animation == null) {
               final duration = widget.duration ??
-                  Duration(
-                      milliseconds: 1000 * totalPathLength ~/ widget.speed!);
+                  Duration(milliseconds: 1000 * totalPathLength ~/ widget.speed!);
               controller = AnimationController(duration: duration, vsync: this);
-              animation =
-                  CurvedAnimation(parent: controller!, curve: widget.curve);
+              animation = CurvedAnimation(parent: controller!, curve: widget.curve);
               if (widget.repeats) {
                 controller!.repeat();
               } else {
@@ -131,8 +128,7 @@ class _SvgDrawingAnimationState extends State<SvgDrawingAnimation>
                         size: drawable.viewport.viewBox,
                         child: CustomPaint(
                             painter: ClippedPathPainter(snapshot.data!,
-                                pathLengthLimit:
-                                    animation!.value * totalPathLength,
+                                progressFactor: animation!.value,
                                 penRenderer: widget.penRenderer))));
               });
         });

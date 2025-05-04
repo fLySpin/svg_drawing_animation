@@ -6,22 +6,22 @@ import 'package:flutter/material.dart';
 import 'pen_renderer/pen_renderer.dart';
 
 class ClippedPathCanvasProxy implements Canvas {
-  final double pathLengthLimit;
+  final double progressFactor;
   final Canvas canvas;
 
   double drawnPathLength = 0;
 
   final PenRenderer? penRenderer;
 
-  ClippedPathCanvasProxy(this.canvas,
-      {required this.pathLengthLimit, this.penRenderer});
+  ClippedPathCanvasProxy(this.canvas, {required this.progressFactor, this.penRenderer});
 
   @override
   void drawPath(Path path, Paint paint) {
+    var limit = _computeLimit(path);
+
     for (final contourMetrics in path.computeMetrics()) {
       // Compute how much we're allowed to draw.
-      final lengthToDraw =
-          min(pathLengthLimit - drawnPathLength, contourMetrics.length);
+      final lengthToDraw = min(limit * progressFactor - drawnPathLength, contourMetrics.length);
 
       // If we can't draw anymore, abort.
       if (lengthToDraw == 0) {
@@ -40,8 +40,8 @@ class ClippedPathCanvasProxy implements Canvas {
 
       final isFinalStroke = lengthToDraw < contourMetrics.length;
       if (isFinalStroke) {
-        final pathEndPoint = contourMetrics
-            .extractPath(lengthToDraw, lengthToDraw, startWithMoveTo: true);
+        final pathEndPoint =
+            contourMetrics.extractPath(lengthToDraw, lengthToDraw, startWithMoveTo: true);
         final penPosition = pathEndPoint.getBounds().center;
         // Render the pen's tip.
         penRenderer!.draw(canvas, penPosition, paint);
@@ -73,5 +73,14 @@ class ClippedPathCanvasProxy implements Canvas {
   dynamic noSuchMethod(Invocation invocation) {
     // Ignore missing implementations.
     // super.noSuchMethod(invocation);
+  }
+
+  double _computeLimit(Path path) {
+    var ret = 0.0;
+    for (final contourMetrics in path.computeMetrics()) {
+      ret += contourMetrics.length;
+    }
+
+    return ret;
   }
 }

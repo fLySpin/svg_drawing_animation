@@ -5,18 +5,16 @@ import 'clipped_path_canvas_proxy.dart';
 import 'pen_renderer/pen_renderer.dart';
 
 class ClippedPathPainter extends CustomPainter {
-  ClippedPathPainter(this.drawableRoot,
-      {required this.pathLengthLimit, this.penRenderer});
+  ClippedPathPainter(this.drawableRoot, {required this.progressFactor, this.penRenderer});
 
   final DrawableRoot drawableRoot;
-  final double pathLengthLimit;
+  final double progressFactor;
   final PenRenderer? penRenderer;
 
   @override
   void paint(Canvas canvas, Size size) {
     drawableRoot.draw(
-        ClippedPathCanvasProxy(canvas,
-            pathLengthLimit: pathLengthLimit, penRenderer: penRenderer),
+        ClippedPathCanvasProxy(canvas, progressFactor: progressFactor, penRenderer: penRenderer),
         // `bounds` are not used according to [DrawableRoot.draw].
         Rect.zero);
   }
