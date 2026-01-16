@@ -244,7 +244,7 @@ Future<void> renderClippedPathPainterAndCheckGoldens(WidgetTester widgetTester,
                   size: svg.viewport.viewBox,
                   child: CustomPaint(
                     painter: ClippedPathPainter(svg,
-                        pathLengthLimit: pathLengthLimit),
+                        progressFactor: pathLengthLimit),
                   ))),
         ),
       )));
@@ -258,15 +258,14 @@ Future<void> renderClippedPathPainterAndCheckGoldens(WidgetTester widgetTester,
 class FixedAnimation implements ValueListenable<double> {
   @override
   void addListener(VoidCallback listener) {
-    // TODO: implement addListener
+    // No-op for fixed animation in tests
   }
 
   @override
   void removeListener(VoidCallback listener) {
-    // TODO: implement removeListener
+    // No-op for fixed animation in tests
   }
 
   @override
-  // TODO: implement value
-  double get value => throw UnimplementedError();
+  double get value => 1.0;
 }
