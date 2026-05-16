@@ -231,6 +231,7 @@ Future<void> renderAndCheckGoldens(WidgetTester widgetTester,
 
 Future<void> renderClippedPathPainterAndCheckGoldens(WidgetTester widgetTester,
     String description, DrawableRoot svg, double pathLengthLimit) async {
+  final totalLength = SvgDrawingAnimation.getPathLengthSum(svg);
   await widgetTester.pumpWidget(MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -244,7 +245,7 @@ Future<void> renderClippedPathPainterAndCheckGoldens(WidgetTester widgetTester,
                   size: svg.viewport.viewBox,
                   child: CustomPaint(
                     painter: ClippedPathPainter(svg,
-                        pathLengthLimit: pathLengthLimit),
+                        progressFactor: pathLengthLimit / totalLength),
                   ))),
         ),
       )));

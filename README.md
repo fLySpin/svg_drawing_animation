@@ -210,6 +210,14 @@ We allow custom rendering of loading and error states similar to Image's [ImageL
 
 ## Developing
 
+### Running tests
+
+Run all tests:
+
+```bash
+flutter test
+```
+
 ### Re-generating http.Client mocks
 
 Run `flutter pub run build_runner build`. See [Flutter Cookbook on Mockito](https://docs.flutter.dev/cookbook/testing/unit/mocking#3-create-a-test-file-with-a-mock-httpclient).

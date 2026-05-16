@@ -30,3 +30,6 @@ pubspec.lock
 build/
 # Screenshot test outputs.
 test/failures/
+
+# Claude
+.claude/settings.json
